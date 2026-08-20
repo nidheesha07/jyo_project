@@ -9,7 +9,7 @@ body {
   position: relative;
 }
 
-/* Locks the visual element in the center of the viewport while scrolling */
+/* Locks the visual element in the center of the viewporttttt while scrolling */
 .sticky-stage {
   position: sticky;
   top: 0;
