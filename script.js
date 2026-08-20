@@ -6,7 +6,7 @@ const observerOptions = {
   rootMargin: '0px',
   threshold: 0.6 // Triggers when 60% of the step is visible
 };
-
+//kkkkk
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
