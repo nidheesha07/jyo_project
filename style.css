@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  background-color: #0b0f19;
+  color: #f3f4f6;
+  font-family: sans-serif;
+}
+
+.scrolly-container {
+  position: relative;
+}
+
+/* Locks the visual element in the center of the viewport while scrolling */
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.art-element {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-radius: 20px;
+  transition: transform 0.6s ease, border-radius 0.6s ease, background 0.6s ease;
+}
+
+/* The text panels that scroll over the sticky stage */
+.scroll-track {
+  position: relative;
+  z-index: 2;
+  margin-top: -100vh; /* Pulls track up to overlap the sticky stage */
+}
+
+.step {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10vw;
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+}
+
+.step.active {
+  opacity: 1;
+}

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Micro-Atlas — Secret Local Scrapbook</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --danger: #f43f5e;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Form Card */
+    .form-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input, select, textarea {
+      background-color: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    button.submit-btn {
+      background-color: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s, transform 0.1s;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    button.submit-btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    button.submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Search Bar */
+    .search-bar {
+      margin-bottom: 2rem;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 1.05rem;
+      border-radius: 12px;
+    }
+
+    /* Grid Container for Cards */
+    .gems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Individual Gem Card */
+    .gem-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .gem-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge {
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .gem-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .location {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .story {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+
+    .delete-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .delete-btn:hover {
+      color: var(--danger);
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+      padding: 3rem;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🗺️ The Micro-Atlas</h1>
+      <p>Your digital scrapbook of hidden local gems and secret spots.</p>
+    </header>
+
+    <!-- Submission Form -->
+    <section class="form-card">
+      <h2>Pin a New Secret Spot</h2>
+      <form id="gem-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Spot Name</label>
+            <input type="text" id="name" placeholder="e.g., Corner Bookstore" required>
+          </div>
+
+          <div class="form-group">
+            <label for="neighborhood">Neighborhood / Area</label>
+            <input type="text" id="neighborhood" placeholder="e.g., Old Town" required>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option value="☕ Cafe">☕ Cafe</option>
+              <option value="🌳 Nature">🌳 Nature</option>
+              <option value="📚 Bookstore">📚 Bookstore</option>
+              <option value="🎨 Art & Culture">🎨 Art & Culture</option>
+              <option value="🍕 Food">🍕 Food</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="story">The Personal Story / Vibe Note</label>
+            <textarea id="story" placeholder="Why is this place special? What does it feel like?" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Save to Atlas</button>
+      </form>
+    </section>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="🔍 Search your saved spots by name or neighborhood...">
+    </div>
+
+    <!-- Dynamic Cards Container -->
+    <div class="gems-grid" id="gems-container">
+      <!-- Cards will be injected here dynamically by JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    // 1. Initialize State from LocalStorage (or empty array if none exists)
+    let gems = JSON.parse(localStorage.getItem('micro_atlas_gems')) || [];
+
+    const form = document.getElementById('gem-form');
+    const container = document.getElementById('gems-container');
+    const searchInput = document.getElementById('search-input');
+
+    // 2. Render Function to display cards on screen
+    function renderGems(itemsToRender = gems) {
+      container.innerHTML = '';
+
+      if (itemsToRender.length === 0) {
+        container.innerHTML = `<div class="empty-state">No spots pinned yet. Add your first secret gem above! 🌟</div>`;
+        return;
+      }
+
+      itemsToRender.forEach((gem, index) => {
+        container.innerHTML += `
+          <div class="gem-card">
+            <div>
+              <div class="card-header">
+                <h3>${gem.name}</h3>
+                <span class="badge">${gem.category}</span>
+              </div>
+              <p class="location">📍 ${gem.neighborhood}</p>
+              <p class="story">"${gem.story}"</p>
+            </div>
+            <div class="card-footer">
+              <button class="delete-btn" onclick="deleteGem(${index})">Remove Spot</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 3. Handle Form Submission
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Stop page from reloading
+
+      const newGem = {
+        name: document.getElementById('name').value,
+        neighborhood: document.getElementById('neighborhood').value,
+        category: document.getElementById('category').value,
+        story: document.getElementById('story').value
+      };
+
+      gems.push(newGem); // Add to state array
+      syncStorage();     // Save permanently
+      form.reset();      // Clear inputs
+      renderGems();      // Refresh UI
+    });
+
+    // 4. Delete Gem Function
+    window.deleteGem = function(index) {
+      gems.splice(index, 1); // Remove item from array
+      syncStorage();         // Update storage
+      renderGems();          // Refresh UI
+    }
+
+    // 5. Real-time Search Filtering
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = gems.filter(gem => 
+        gem.name.toLowerCase().includes(term) || 
+        gem.neighborhood.toLowerCase().includes(term) ||
+        gem.story.toLowerCase().includes(term)
+      );
+      renderGems(filtered);
+    });
+
+    // Helper to save current array into browser LocalStorage
+    function syncStorage() {
+      localStorage.setItem('micro_atlas_gems', JSON.stringify(gems));
+    }
+
+    // Initial render when page loads
+    renderGems();
+  </script>
+
+</body>
+</html>
